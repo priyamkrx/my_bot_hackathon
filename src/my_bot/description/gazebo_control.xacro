@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- 
+      This is the new DiffDrive plugin for Gazebo (Gz).
+      It replaces the old 'libgazebo_ros_diff_drive.so' from Gazebo Classic.
+    -->
+    <plugin filename="gz::sim::systems::DiffDrive"
+            name="gz::sim::systems::DiffDrive">
+        
+        <!-- Wheel Information -->
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.35</wheel_separation>
+        <!-- NOTE: This is wheel_RADIUS, not diameter -->
+        <wheel_radius>0.05</wheel_radius> 
+        
+        <!-- 
+          Limits: In new Gazebo, max_wheel_torque and max_wheel_acceleration
+          are usually set on the <joint> definitions themselves (in your URDF), 
+          not in the diff_drive plugin.
+        -->
+
+        <!-- Output -->
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_link</robot_base_frame>
+
+        <!-- This plugin publishes odometry to the /odom topic on Gazebo Transport -->
+        <publish_odom>true</publish_odom>
+        
+        <!-- This plugin publishes the odom -> base_link transform to /tf on Gazebo Transport -->
+        <publish_tf>true</publish_tf>
+        
+        <!-- This plugin publishes wheel transforms to /tf on Gazebo Transport -->
+        <publish_wheel_tf>true</publish_wheel_tf>
+        
+        <!-- 
+          This plugin subscribes to /cmd_vel on Gazebo Transport.
+          We MUST add a 'ros_gz_bridge' to our launch file to bridge
+          ROS 2's /cmd_vel (topic type geometry_msgs/msg/Twist)
+          to Gazebo's /cmd_vel (topic type gz.msgs.Twist).
+        -->
+    </plugin>
+</robot>
